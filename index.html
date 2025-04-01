@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculadora de Prazos</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 600px;
+      margin: auto;
+      padding: 2rem;
+    }
+    h1 {
+      text-align: center;
+    }
+    label, input, button {
+      display: block;
+      margin-top: 1rem;
+      width: 100%;
+    }
+    .result {
+      margin-top: 2rem;
+      padding: 1rem;
+      background-color: #e0ffe0;
+      border: 1px solid #b2ffb2;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+  <h1>📅 Calculadora de Prazos Corridos</h1>
+  <p>Esta ferramenta calcula o <strong>vencimento de um prazo corrido</strong>, iniciando <strong>no dia seguinte ao ato</strong> e <strong>antecipando para o último dia últil anterior</strong> caso o prazo final caia em um fim de semana.</p>
+
+  <label for="dataAto">Selecione a data do ato:</label>
+  <input type="date" id="dataAto">
+
+  <label for="diasPrazo">Informe o prazo (em dias corridos):</label>
+  <input type="number" id="diasPrazo" min="1">
+
+  <button onclick="calcularPrazo()">Calcular Vencimento</button>
+
+  <div class="result" id="resultado" style="display: none;"></div>
+
+  <script>
+    function calcularPrazo() {
+      const dataAtoInput = document.getElementById('dataAto').value;
+      const diasPrazoInput = parseInt(document.getElementById('diasPrazo').value);
+      const resultadoDiv = document.getElementById('resultado');
+
+      if (!dataAtoInput || isNaN(diasPrazoInput) || diasPrazoInput < 1) {
+        alert("Por favor, preencha todos os campos corretamente.");
+        return;
+      }
+
+      let dataAto = new Date(dataAtoInput);
+      let dataInicio = new Date(dataAto);
+      dataInicio.setDate(dataInicio.getDate() + 1);
+
+      let dataFinal = new Date(dataInicio);
+      dataFinal.setDate(dataFinal.getDate() + diasPrazoInput - 1);
+
+      // Ajusta se cair em sábado ou domingo
+      while (dataFinal.getDay() === 6 || dataFinal.getDay() === 0) {
+        dataFinal.setDate(dataFinal.getDate() - 1);
+      }
+
+      const dataFormatada = dataFinal.toLocaleDateString('pt-BR');
+      resultadoDiv.innerHTML = `📌 O vencimento ajustado é: <strong>${dataFormatada}</strong>`;
+      resultadoDiv.style.display = 'block';
+    }
+  </script>
+</body>
+</html>
