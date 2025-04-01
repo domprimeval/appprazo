@@ -69,7 +69,7 @@
       dataInicio.setDate(dataInicio.getDate() + 1);
 
       let dataFinal = new Date(dataInicio);
-      dataFinal.setDate(dataFinal.getDate() + diasPrazoInput - 1);
+      dataFinal.setDate(dataFinal.getDate() + diasPrazoInput);
 
       // Ajusta se cair em sábado ou domingo
       while (dataFinal.getDay() === 6 || dataFinal.getDay() === 0) {
